@@ -1,0 +1,2 @@
+KERNEL=="uinput", MODE="0666"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="04b4", ATTR{idProduct}=="0101", GROUP="input", MODE="0666", SYMLINK+="input/steelseries6gv2", RUN{program}+="/usr/sbin/systemctl restart steelseries6gv2.service"

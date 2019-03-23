@@ -1,0 +1,12 @@
+[Unit]
+Description=steelseries 6gv2 keyboard media keys control service
+Requires=systemd-udevd.service
+After=systemd-udevd.service
+ConditionPathExists=/dev/input/steelseries6gv2
+
+[Service]
+Type=simple
+ExecStart=/home/fvdnabee/GIT/steelseries6gv2/build/src/steelseries6gv2
+
+[Install]
+WantedBy=multi-user.target
