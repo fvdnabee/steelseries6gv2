@@ -2,8 +2,8 @@ steelseries6gv2
 ===========
 
 steelseries6gv2 is a program that translates USB HID events from the media keys of a Steelseries 6gv2 keyboard to media key strokes in linux.
-The program barrows heavily from (usbhid-dump)[https://github.com/DIGImend/usbhid-dump/] for processing the USB HID communication.
-Sending key strokes to the linux kernel is done via the (uinput module)[https://www.kernel.org/doc/html/v4.12/input/uinput.html].
+The program barrows heavily from [usbhid-dump](https://github.com/DIGImend/usbhid-dump/) for processing the USB HID communication.
+Sending key strokes to the linux kernel is done via the [uinput module](https://www.kernel.org/doc/html/v4.12/input/uinput.html).
 
 Dependencies:
 ------------
@@ -13,9 +13,9 @@ Dependencies:
 Installation
 ------------
 
-* Run `autoreconf -i -f`.
-* Run `./configure && make` to build.
-* The binary is available under src/steelseries6gv2.
+* Run `autoreconf -i -f`
+* Run `./configure && make` to build
+* The binary is available under src/steelseries6gv2
 
 Usage:
 -----
@@ -26,13 +26,13 @@ Running steelseries6gv2 as an unprivileged user requires access to both the uinp
 KERNEL=="uinput", MODE="0666"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="04b4", ATTR{idProduct}=="0101", GROUP="input", MODE="0666"
 ```
-See (Arch Wiki)[https://wiki.archlinux.org/index.php/Udev] for more details on udev rules.
+See the [Arch Wiki](https://wiki.archlinux.org/index.php/Udev) for more details on udev rules.
 
 Known issues:
 ------------
 * You might notice that /dev/uinput does not exist or does not have the file permissions as per the udev rule above. One fix for this is to signal the kernel to load uinput module as follows:
 `cat uinput > /etc/modules-load.d/uinput.conf`
-* When you have pressed the media keys without the steelseries6gv2 program running, then the usb device won't generate any USB HID events. In this case you can reset the USB device by executing the reset-keyboard-usb-device.sh script.
+* When you have pressed the media keys without the steelseries6gv2 program running, then the usb device won't generate any USB HID events. In this case you can reset the USB device by executing the `reset-keyboard-usb-device.sh` script.
 
 TODO:
 -----
