@@ -7,6 +7,12 @@
 /configure
 /m4/
 /stamp-h?
+/build/
+/compile
+/depcomp
+/install-sh
+/ltmain.sh
+/missing
 .deps/
 .dirstamp
 *.o
