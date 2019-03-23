@@ -28,11 +28,22 @@ ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="04b4", ATTR{idProduct}=="0101"
 ```
 See the [Arch Wiki](https://wiki.archlinux.org/index.php/Udev) for more details on udev rules.
 
+### Loading steelseriesg6v2 when the keyboard is plugged in
+You can use the systemd service file provided under var/steelseries6gv2.service. This service file depends on the udev rules in var/00-steelseries6gv2.rules.
+
+Steps:
+* Install the udev rules from var/00-steelseriesg6v2.rules in /etc/udev/rules.d: `cp var/00-steelseriesg6v2.rules /etc/udev/rules.d`
+* Force reload of udev rules via `udevadm control --reload && udevadm trigger`
+* Install systemd service file: `ln -s `pwd`/var/steelseries6gv2.service /etc/systemd/system/`
+* Reload systemd: `systemctl daemon-reload`
+
+The next time you plugin your keyboard (or when detected at first boot), the systemctl service should be active.
+Note that when the keyboard is removed the service will have failed in an error state, e.g.: `Main PID: 481 (code=exited, status=1/FAILURE)`. This is normal and shouldn't affect the next time you plugin the keyboard.
+
 Known issues:
 ------------
-* You might notice that /dev/uinput does not exist or does not have the file permissions as per the udev rule above. One fix for this is to signal the kernel to load uinput module as follows:
-`cat uinput > /etc/modules-load.d/uinput.conf`
-* When you have pressed the media keys without the steelseries6gv2 program running, then the usb device won't generate any USB HID events. In this case you can reset the USB device by executing the `reset-keyboard-usb-device.sh` script.
+* You might notice that /dev/uinput does not exist or does not have the file permissions as per the udev rule above. One fix for this is to signal the kernel to load uinput module as follows: `cat uinput > /etc/modules-load.d/uinput.conf`. This file is available under var.
+* When you have pressed the media keys without the steelseries6gv2 program running, then the usb device won't generate any USB HID events. In this case you can reset the USB device by executing the `reset-keyboard-usb-device.sh` script. This script is available under var.
 
 HID events to media keys:
 -------------------------
@@ -51,7 +62,5 @@ On a media key press the steelseries 6Gv2 keyboard generates a HID event with 2 
 
 TODO:
 -----
-* Extend udev rules to automatically start the program when the keyboard is detected.
-* Add make install which installs the necessary udev rules and make the program available on the system path.
+* Add make install which installs the necessary udev rules, installs the systemctl service and makes the program available on the system path.
 * Handle the case when pressing the media keys doesn't generate the USB HID events. Best solution seems to be to always reset the USB device at the beginning of the program and hope that this always fixes the issue...
-* Hot swapping might be a problem, could be fixed by udev rules?
