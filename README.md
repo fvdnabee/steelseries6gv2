@@ -34,6 +34,21 @@ Known issues:
 `cat uinput > /etc/modules-load.d/uinput.conf`
 * When you have pressed the media keys without the steelseries6gv2 program running, then the usb device won't generate any USB HID events. In this case you can reset the USB device by executing the `reset-keyboard-usb-device.sh` script.
 
+HID events to media keys:
+-------------------------
+On a media key press the steelseries 6Gv2 keyboard generates a HID event with 2 bytes of data. The first byte is always equal to 2, the second byte states which key was pressed. The mapping is listed in the table below. When the media key is released the second byte is equal to zero.
+
+| Media key pressed  | HID event data | Linux key            |
+| ------------------ | -------------- | -------------------- |
+| Fn+F1              | 0x02 0x04      | KEY_MUTE             |
+| Fn+F2              | 0x02 0x02      | KEY_VOLUMEDOWN       |
+| Fn+F3              | 0x02 0x01      | KEY_VOLUMEUP         |
+| Fn+F4              | 0x02 0x08      | KEY_PLAYPAUSE        |
+| Fn+F5              | 0x02 0x20      | KEY_NEXTSONG         |
+| Fn+F6              | 0x02 0x10      | KEY_PREVIOUSSONG     |
+| Keys released      | 0x02 0x00      | Release previous key |
+
+
 TODO:
 -----
 * Extend udev rules to automatically start the program when the keyboard is detected.
